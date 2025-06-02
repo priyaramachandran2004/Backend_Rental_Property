@@ -16,11 +16,11 @@ public  class OwnerServiceImpl implements OwnerService {
     private OwnerRepository ownerRepository;
     
     private OwnerDTO mapToDTO(Owner owner) {
-        return new OwnerDTO(owner.getOwnerId(), owner.getName(), owner.getEmail(), owner.getPhone());
+        return new OwnerDTO(owner.getOwnerId(), owner.getName(), owner.getEmail(), owner.getPhone(), owner.getPassword());
     }
 
     private Owner mapToEntity(OwnerDTO dto) {
-        return new Owner(dto.getOwnerId(), dto.getName(), dto.getEmail(), dto.getPhone());
+        return new Owner(dto.getOwnerId(), dto.getName(), dto.getEmail(), dto.getPhone(), dto.getPassword());
     }
 
     @Override
