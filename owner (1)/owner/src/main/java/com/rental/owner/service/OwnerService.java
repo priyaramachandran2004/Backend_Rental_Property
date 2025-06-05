@@ -10,4 +10,5 @@ public interface OwnerService {
     OwnerDTO updateOwner(Long id, OwnerDTO ownerDTO);
     void deleteOwner(Long id);
 	boolean existsById(Long id);
+	OwnerDTO getOwnerByEmail(String email);
 }

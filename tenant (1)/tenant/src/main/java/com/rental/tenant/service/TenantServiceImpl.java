@@ -69,7 +69,7 @@ public class TenantServiceImpl implements TenantService {
         existing.setEmail(dto.getEmail());
         existing.setPhone(dto.getPhone());
         existing.setRentalHistory(dto.getRentalHistory());
-
+        existing.setPassword(dto.getPassword());
         Tenant updated = tenantRepository.save(existing);
         return mapToResponseDTO(updated);
     }

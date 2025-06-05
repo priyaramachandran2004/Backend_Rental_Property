@@ -13,4 +13,5 @@ public interface LeaseService {
     List<LeaseResponseDTO> getLeasesByTenant(Long tenantId);
     List<LeaseResponseDTO> getLeasesByProperty(Long propertyId);
 	boolean checkIfLeaseExists(Long leaseId);
+	LeaseResponseDTO getLeaseById(Long id);
 }

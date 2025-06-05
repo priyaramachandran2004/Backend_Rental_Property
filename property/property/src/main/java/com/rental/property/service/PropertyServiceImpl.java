@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class PropertyServiceImpl implements PropertyService {
@@ -24,7 +23,6 @@ public class PropertyServiceImpl implements PropertyService {
     @Autowired
     private OwnerClient ownerClient;
   
-    
     @Override
     public PropertyResponseDTO addProperty(PropertyRequestDTO dto) {
         // ✅ Check if the owner exists before saving the property
@@ -32,32 +30,34 @@ public class PropertyServiceImpl implements PropertyService {
             throw new PropertyNotFoundException("Owner not found with id: " + dto.getOwnerId());
         }
 
-        Property property = new Property(
-                null,
-                dto.getOwnerId(),
-                dto.getAddress(),
-                dto.getRentAmount(),
-                dto.getAvailabilityStatus(),
-                dto.getDescription()
-        );
-
-        Property saved = repository.save(property);
-        return convertToResponseDTO(saved);
-    }
-
-    @Override
-    public PropertyResponseDTO updateProperty(Long id, PropertyRequestDTO dto) {
-    	 if (!ownerClient.checkIfOwnerExists(dto.getOwnerId())) {
-             throw new PropertyNotFoundException("Owner not found with id: " + dto.getOwnerId());
-         }
-        Property property = repository.findById(id)
-                .orElseThrow(() -> new PropertyNotFoundException("Property not found with ID: " + id));
-
+        // ✅ Convert DTO to Entity before saving
+        Property property = new Property();
+        property.setOwnerId(dto.getOwnerId());
         property.setAddress(dto.getAddress());
         property.setRentAmount(dto.getRentAmount());
         property.setAvailabilityStatus(dto.getAvailabilityStatus());
         property.setDescription(dto.getDescription());
+        property.setName(dto.getName());
 
+        Property saved = repository.save(property); // Save entity in the database
+        return convertToResponseDTO(saved); // Convert Entity to DTO
+    }
+
+    @Override
+    public PropertyResponseDTO updateProperty(Long id, PropertyRequestDTO dto) {
+        if (!ownerClient.checkIfOwnerExists(dto.getOwnerId())) {
+            throw new PropertyNotFoundException("Owner not found with id: " + dto.getOwnerId());
+        }
+        
+        Property property = repository.findById(id)
+                .orElseThrow(() -> new PropertyNotFoundException("Property not found with ID: " + id));
+
+        // ✅ Update existing property
+        property.setAddress(dto.getAddress());
+        property.setRentAmount(dto.getRentAmount());
+        property.setAvailabilityStatus(dto.getAvailabilityStatus());
+        property.setDescription(dto.getDescription());
+        property.setName(dto.getName());
 
         return convertToResponseDTO(repository.save(property));
     }
@@ -80,13 +80,23 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public List<PropertyResponseDTO> getPropertiesByOwner(Long ownerId) {
-    	if (!ownerClient.checkIfOwnerExists(ownerId)) {
+        if (!ownerClient.checkIfOwnerExists(ownerId)) {
             throw new PropertyNotFoundException("Owner not found with ID: " + ownerId);
         }
+        
         return repository.findByOwnerId(ownerId)
                 .stream()
                 .map(this::convertToResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public PropertyResponseDTO getPropertyById(Long id) {
+        // ✅ Implement method to return property by ID
+        Property property = repository.findById(id)
+                .orElseThrow(() -> new PropertyNotFoundException("Property not found with ID: " + id));
+        
+        return convertToResponseDTO(property);
     }
 
     private PropertyResponseDTO convertToResponseDTO(Property property) {
@@ -96,7 +106,8 @@ public class PropertyServiceImpl implements PropertyService {
                 property.getAddress(),
                 property.getRentAmount(),
                 property.getAvailabilityStatus(),
-                property.getDescription()
+                property.getDescription(),
+                property.getName()
         );
     }
     

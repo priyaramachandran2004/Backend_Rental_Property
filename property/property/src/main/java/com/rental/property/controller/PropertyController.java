@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/properties")
 @RequiredArgsConstructor
 public class PropertyController {
@@ -47,5 +48,9 @@ public class PropertyController {
     @GetMapping("/exists/{propertyId}")
     public boolean checkIfPropertyExists(@PathVariable Long propertyId) {
         return propertyService.existsById(propertyId);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<PropertyResponseDTO> getPropertyById(@PathVariable Long id) {
+        return ResponseEntity.ok(propertyService.getPropertyById(id));
     }
 }

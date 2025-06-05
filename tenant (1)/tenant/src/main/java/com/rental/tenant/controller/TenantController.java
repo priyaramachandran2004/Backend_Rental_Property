@@ -28,8 +28,12 @@ public class TenantController {
     private TenantRepository tenantRepository;
 
     @PostMapping
-    public TenantResponseDTO registerTenant(@RequestBody TenantRequestDTO dto) {
-        return tenantService.registerTenant(dto);
+    public ResponseEntity<?> registerTenant(@RequestBody TenantRequestDTO dto) {
+        if (tenantRepository.findByEmail(dto.getEmail()) != null) {
+            return ResponseEntity.status(HttpStatus.SC_CONFLICT).body("Tenant already exists!");
+        }
+        TenantResponseDTO newTenant = tenantService.registerTenant(dto);
+        return ResponseEntity.ok(newTenant);
     }
 
     @GetMapping("/{id}")

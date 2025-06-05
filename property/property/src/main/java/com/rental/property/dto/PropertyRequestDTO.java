@@ -9,21 +9,29 @@ public class PropertyRequestDTO {
     public PropertyRequestDTO() {
 		
 	}
-	public PropertyRequestDTO(Long ownerId, String address, Double rentAmount, String availabilityStatus,
-			String description) {
-		
+	public PropertyRequestDTO(Long propertyId,Long ownerId, String address, Double rentAmount, boolean availabilityStatus,
+			String description,String name) {
+		this.propertyId=propertyId;
 		this.ownerId = ownerId;
 		this.address = address;
 		this.rentAmount = rentAmount;
 		this.availabilityStatus = availabilityStatus;
 		this.description = description;
+		this.name=name;
 	}
+	private Long propertyId;
 	private Long ownerId;
     private String address;
     private Double rentAmount;
-    private String availabilityStatus;
+    private boolean availabilityStatus;
     private String description;
-   
+   private String name;
+	public String getName() {
+	return name;
+}
+public void setName(String name) {
+	this.name = name;
+}
 	public Long getOwnerId() {
 		return ownerId;
 	}
@@ -42,10 +50,10 @@ public class PropertyRequestDTO {
 	public void setRentAmount(Double rentAmount) {
 		this.rentAmount = rentAmount;
 	}
-	public String getAvailabilityStatus() {
+	public boolean getAvailabilityStatus() {
 		return availabilityStatus;
 	}
-	public void setAvailabilityStatus(String availabilityStatus) {
+	public void setAvailabilityStatus(boolean availabilityStatus) {
 		this.availabilityStatus = availabilityStatus;
 	}
 	public String getDescription() {
@@ -54,4 +62,11 @@ public class PropertyRequestDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public Long getPropertyId() {
+		return propertyId;
+	}
+	public void setPropertyId(Long propertyId) {
+		this.propertyId = propertyId;
+	}
+	
 }

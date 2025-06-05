@@ -6,11 +6,13 @@ import com.rental.lease.service.LeaseService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/leases")
 @RequiredArgsConstructor
 public class LeaseController {
@@ -32,6 +34,12 @@ public class LeaseController {
     public String deleteLease(@PathVariable Long id) {
         service.deleteLease(id);
         return "Lease deleted Sucessfully";
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LeaseResponseDTO> getLeaseById(@PathVariable Long id) {
+        LeaseResponseDTO lease = service.getLeaseById(id);
+        return ResponseEntity.ok(lease);
     }
 
     @GetMapping

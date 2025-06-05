@@ -7,6 +7,8 @@ import com.rental.lease.dto.LeaseResponseDTO;
 import com.rental.lease.exception.ResourceNotFoundException;
 import com.rental.lease.model.Lease;
 import com.rental.lease.repository.LeaseRepository;
+
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +40,7 @@ public class LeaseServiceImpl implements LeaseService {
         Lease lease = new Lease();
         lease.setTenantId(dto.getTenantId());
         lease.setPropertyId(dto.getPropertyId());
-        lease.setStartDate(dto.getStartDate());
-        lease.setEndDate(dto.getEndDate());
+        lease.setDuration(dto.getDuration());
         lease.setRentAmount(dto.getRentAmount());
 
         Lease saved = repository.save(lease);
@@ -58,8 +59,7 @@ public class LeaseServiceImpl implements LeaseService {
         Lease lease = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lease not found with ID: " + id));
 
-        lease.setStartDate(dto.getStartDate());
-        lease.setEndDate(dto.getEndDate());
+        lease.setDuration(dto.getDuration());
         lease.setRentAmount(dto.getRentAmount());
 
         Lease updated = repository.save(lease);
@@ -97,9 +97,15 @@ public class LeaseServiceImpl implements LeaseService {
         response.setLeaseId(lease.getLeaseId());
         response.setTenantId(lease.getTenantId());
         response.setPropertyId(lease.getPropertyId());
-        response.setStartDate(lease.getStartDate());
-        response.setEndDate(lease.getEndDate());
+        response.setDuration(lease.getDuration());
         response.setRentAmount(lease.getRentAmount());
         return response;
     }
+    public LeaseResponseDTO getLeaseById(Long id) {
+        Lease lease = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Lease not found with ID: " + id));
+
+        return convertToResponse(lease);
+    }
+	
 }

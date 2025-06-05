@@ -9,14 +9,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Property {
-    public Property(Long propertyId, Long ownerId, String address, Double rentAmount, String availabilityStatus,
-			String description) {
+    public Property(Long propertyId, Long ownerId, String address, Double rentAmount, boolean availabilityStatus,
+			String description, String name) {
 		this.propertyId = propertyId;
 		this.ownerId = ownerId;
 		this.address = address;
 		this.rentAmount = rentAmount;
 		this.availabilityStatus = availabilityStatus;
 		this.description = description;
+		this.name=name;
 	}
 	public Property() {
 		
@@ -43,10 +44,10 @@ public class Property {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getAvailabilityStatus() {
+	public boolean getAvailabilityStatus() {
 		return availabilityStatus;
 	}
-	public void setAvailabilityStatus(String availabilityStatus) {
+	public void setAvailabilityStatus(boolean availabilityStatus) {
 		this.availabilityStatus = availabilityStatus;
 	}
 	public Double getRentAmount() {
@@ -61,10 +62,17 @@ public class Property {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	private Long ownerId;
     private String address;
     private Double rentAmount;
-    private String availabilityStatus; // AVAILABLE / RENTED / UNAVAILABLE
+    private boolean availabilityStatus; 
     private String description;
+    private String name;
     
 }

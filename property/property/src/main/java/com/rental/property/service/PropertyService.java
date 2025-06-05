@@ -13,4 +13,5 @@ public interface PropertyService {
     List<PropertyResponseDTO> getAllProperties();
     List<PropertyResponseDTO> getPropertiesByOwner(Long ownerId);
     boolean existsById(Long propertyId);
+	PropertyResponseDTO getPropertyById(Long id);
 }

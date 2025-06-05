@@ -9,4 +9,5 @@ public interface PaymentService {
     PaymentResponseDTO createPayment(PaymentRequestDTO dto);
     PaymentResponseDTO getPaymentById(Long id);
     List<PaymentResponseDTO> getAllPayments();
+	List<PaymentResponseDTO> getPaymentsByLeaseId(Long leaseId);
 }

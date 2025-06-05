@@ -18,17 +18,22 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
-	@Autowired
-    private  PaymentRepository repository;
+    
+    @Autowired
+    private PaymentRepository repository;
+
     @Autowired
     private LeaseClient leaseClient;
+
     @Override
     public PaymentResponseDTO createPayment(PaymentRequestDTO dto) {
-    	if (!leaseClient.checkIfLeaseExists(dto.getLeaseId())) {
+        if (!leaseClient.checkIfLeaseExists(dto.getLeaseId())) {
             throw new PaymentNotFoundException("Lease not found with ID: " + dto.getLeaseId());
         }
+
         Payment payment = new Payment(null, dto.getLeaseId(), dto.getAmount(),
                 dto.getPaymentDate(), dto.getPaymentMode());
+
         Payment saved = repository.save(payment);
         return convertToResponse(saved);
     }
@@ -36,13 +41,29 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponseDTO getPaymentById(Long id) {
         Payment payment = repository.findById(id)
-                .orElseThrow(() -> new PaymentNotFoundException("Payment not found with id: " + id));
+                .orElseThrow(() -> new PaymentNotFoundException("Payment not found with ID: " + id));
         return convertToResponse(payment);
     }
 
     @Override
     public List<PaymentResponseDTO> getAllPayments() {
-        return repository.findAll().stream().map(this::convertToResponse).collect(Collectors.toList());
+        return repository.findAll()
+                .stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
+    // ✅ Get Payments by Lease ID Implementation
+    @Override
+    public List<PaymentResponseDTO> getPaymentsByLeaseId(Long leaseId) {
+        if (!leaseClient.checkIfLeaseExists(leaseId)) {
+            throw new PaymentNotFoundException("Lease not found with ID: " + leaseId);
+        }
+
+        return repository.findByLeaseId(leaseId)
+                .stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
     }
 
     private PaymentResponseDTO convertToResponse(Payment payment) {

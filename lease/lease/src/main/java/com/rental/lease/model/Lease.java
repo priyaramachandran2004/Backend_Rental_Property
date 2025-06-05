@@ -3,7 +3,7 @@ package com.rental.lease.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+
 
 @Entity
 @Data
@@ -15,14 +15,13 @@ public class Lease {
     public Lease() {
 		
 	}
-	public Lease(Long leaseId, Long tenantId, Long propertyId, LocalDate startDate, LocalDate endDate,
+	public Lease(Long leaseId, Long tenantId, Long propertyId,String duration,
 			Double rentAmount) {
 		
 		this.leaseId = leaseId;
 		this.tenantId = tenantId;
 		this.propertyId = propertyId;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.duration=duration;
 		this.rentAmount = rentAmount;
 	}
 	@Id
@@ -47,18 +46,7 @@ public class Lease {
 	public void setPropertyId(Long propertyId) {
 		this.propertyId = propertyId;
 	}
-	public LocalDate getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
+	
 	public Double getRentAmount() {
 		return rentAmount;
 	}
@@ -68,7 +56,12 @@ public class Lease {
 	private Long tenantId;
     private Long propertyId;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Double rentAmount;
+   private String duration;
+    public String getDuration() {
+	return duration;
+}
+public void setDuration(String duration) {
+	this.duration = duration;
+}
+	private Double rentAmount;
 }

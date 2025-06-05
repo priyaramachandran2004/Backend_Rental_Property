@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/payments")
 @RequiredArgsConstructor
 public class PaymentController {
-   @Autowired
-    private  PaymentService paymentService;
+   
+    @Autowired
+    private PaymentService paymentService;
 
     @PostMapping
     public PaymentResponseDTO create(@RequestBody PaymentRequestDTO dto) {
@@ -30,5 +32,11 @@ public class PaymentController {
     @GetMapping
     public List<PaymentResponseDTO> getAll() {
         return paymentService.getAllPayments();
+    }
+
+    // ✅ Get Payments by Lease ID
+    @GetMapping("/lease/{leaseId}")
+    public List<PaymentResponseDTO> getPaymentsByLeaseId(@PathVariable Long leaseId) {
+        return paymentService.getPaymentsByLeaseId(leaseId);
     }
 }
